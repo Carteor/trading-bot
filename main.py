@@ -1,5 +1,6 @@
 import os
 import shutil
+import logger
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -8,13 +9,19 @@ from alpaca_trade_api.rest import REST
 from dotenv import load_dotenv
 
 
+logger = logger.getLogger(__name__)
+logging.basicConfig(filename='app.log', encoding='utf-8', level=logging.DEBUG)
+
+
 def load_data(symbol: str, start: str, end: str) -> pd.DataFrame:
+    logger.info(f"load_data({symbol}, {start}, {end})")
     data = yf.download(symbol, start=start, end=end, interval="1d", auto_adjust=True)
     data["Signal"] = 0
     return data
 
 
 def apply_strategy(data: pd.DataFrame, start_cash: float) -> tuple:
+    logger.info("apply_strategy()")
     cash = start_cash
     position = 0
     buy_price = None
@@ -84,13 +91,12 @@ def plot_results(
     )
     plt.title(f"{symbol} Backtest: ${start_cash} -> ${final_value:.2f}")
     plt.legend()
-    # plt.show()
     plt.savefig("backtest_plot.png")
 
     if shutil.which("xdg-open"):
         os.system("xdg-open backtest_plot.png")
     else:
-        print("Plot saved as backtest_plot.png. Please open it manually.")
+        logger.info("Plot saved as backtest_plot.png. Please open it manually.")
 
 
 def main():
@@ -102,7 +108,7 @@ def main():
 
     api = REST(API_KEY, API_SECRET, BASE_URL)
 
-    print("API Key loaded:", API_KEY[:5] + "..." if API_KEY else "Not loaded")
+    logger.info("API Key loaded:", API_KEY[:5] + "..." if API_KEY else "Not loaded")
 
     symbol = "AAPL"
     start_cash = 1000
@@ -113,11 +119,11 @@ def main():
     final_value, data_with_signals = apply_strategy(data, start_cash)
     buy_and_hold_value = calculate_buy_and_hold(data, start_cash)
 
-    print(
+    logger.info(
         f"Start: ${start_cash:.2f}, End: ${final_value:.2f}, Profit: ${
             final_value - start_cash:.2f}"
     )
-    print(
+    logger.info(
         f"Buy and Hold Returns: ${buy_and_hold_value:.2f}, Profit: ${
             buy_and_hold_value - start_cash:.2f}"
     )
