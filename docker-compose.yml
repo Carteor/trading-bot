@@ -5,6 +5,7 @@ services:
     env_file: ".env"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
   pgadmin:
     image: dpage/pgadmin4:latest
