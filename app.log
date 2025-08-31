@@ -1,0 +1,13 @@
+2025-08-22 12:17:12 - __main__ - INFO - load_data(AAPL, 2024-01-01, 2025-01-01)
+2025-08-22 12:17:14 - __main__ - INFO - apply_strategy()
+2025-08-22 12:17:14 - __main__ - INFO - Start: $1000.00, End: $1263.81, Profit: $263.81
+2025-08-22 12:17:14 - __main__ - INFO - Buy and Hold Returns: $1355.56, Profit: $355.56
+2025-08-22 12:19:11 - __main__ - INFO - load_data(AAPL, 2024-01-01, 2025-01-01)
+2025-08-22 12:19:14 - __main__ - INFO - apply_strategy()
+2025-08-22 12:19:14 - __main__ - INFO - Start: $1000.00, End: $1263.81, Profit: $263.81
+2025-08-22 12:19:14 - __main__ - INFO - Buy and Hold Returns: $1355.56, Profit: $355.56
+2025-08-22 12:21:57 - __main__ - INFO - API Key loaded: PK6E5...
+2025-08-22 12:21:57 - __main__ - INFO - load_data(AAPL, 2024-01-01, 2025-01-01)
+2025-08-22 12:22:00 - __main__ - INFO - apply_strategy()
+2025-08-22 12:22:00 - __main__ - INFO - Start: $1000.00, End: $1263.81, Profit: $263.81
+2025-08-22 12:22:00 - __main__ - INFO - Buy and Hold Returns: $1355.56, Profit: $355.56

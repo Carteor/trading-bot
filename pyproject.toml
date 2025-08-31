@@ -9,6 +9,8 @@ dependencies = [
     "dotenv>=0.9.9",
     "matplotlib>=3.10.3",
     "pandas>=2.3.0",
+    "psycopg2>=2.9.10",
     "python-dotenv>=1.1.0",
+    "sqlalchemy>=2.0.43",
     "yfinance>=0.2.58",
 ]

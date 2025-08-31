@@ -1,6 +1,7 @@
 import os
 import shutil
-import logger
+import logging
+import sys
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -8,9 +9,29 @@ import yfinance as yf
 from alpaca_trade_api.rest import REST
 from dotenv import load_dotenv
 
+from sqlalchemy import create_engine
 
-logger = logger.getLogger(__name__)
-logging.basicConfig(filename='app.log', encoding='utf-8', level=logging.DEBUG)
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+file_handler = logging.FileHandler("app.log", encoding="utf-8")
+file_handler.setLevel(logging.DEBUG)
+
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setLevel(logging.INFO)
+
+formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
+file_handler.setFormatter(formatter)
+console_handler.setFormatter(formatter)
+
+if not logger.hasHandlers():
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
 
 
 def load_data(symbol: str, start: str, end: str) -> pd.DataFrame:
@@ -108,7 +129,17 @@ def main():
 
     api = REST(API_KEY, API_SECRET, BASE_URL)
 
-    logger.info("API Key loaded:", API_KEY[:5] + "..." if API_KEY else "Not loaded")
+    if API_KEY:
+        logger.info(f"API Key loaded: {API_KEY[:5]}...")
+    else:
+        logger.info("Not loaded")
+
+    PGUSER = os.getenv("POSTGRES_USER")
+    PGPASSWORD = os.getenv("POSTGRES_PASSWORD")
+
+    engine = create_engine(f'postgresql+psycopg2://{PGUSER}:{PGPASSWORD}@db/pguser')
+
+
 
     symbol = "AAPL"
     start_cash = 1000
