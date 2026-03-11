@@ -10,3 +10,4 @@ wheels/
 .venv
 
 backtest_plot.png
+.env
