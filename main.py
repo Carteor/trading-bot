@@ -36,7 +36,9 @@ if not logger.hasHandlers():
 
 def load_data(symbol: str, start: str, end: str) -> pd.DataFrame:
     logger.info(f"load_data({symbol}, {start}, {end})")
-    data = yf.download(symbol, start=start, end=end, interval="1d", auto_adjust=True)
+    data = yf.download(
+        symbol, start=start, end=end, interval="1d", auto_adjust=True
+    )
     data["Signal"] = 0
     return data
 
@@ -138,8 +140,6 @@ def main():
     PGPASSWORD = os.getenv("POSTGRES_PASSWORD")
 
     engine = create_engine(f'postgresql+psycopg2://{PGUSER}:{PGPASSWORD}@db/pguser')
-
-
 
     symbol = "AAPL"
     start_cash = 1000
