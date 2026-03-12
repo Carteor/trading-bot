@@ -21,6 +21,62 @@ services:
     networks:
       - trading_net
 
+  airflow-webserver:
+    build: .
+    restart: always
+    env_file: ".env"
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW_DB_CONN}
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      PYTHONPATH: /opt/airflow
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./src:/opt/airflow/src
+      - ./logs:/opt/airflow/logs
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    command: webserver
+    networks:
+      - trading_net
+
+  airflow-scheduler:
+    build: .
+    restart: always
+    env_file: ".env"
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW_DB_CONN}
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      PYTHONPATH: /opt/airflow
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./src:/opt/airflow/src
+      - ./logs:/opt/airflow/logs
+    depends_on:
+      - db
+    command: scheduler
+    networks:
+      - trading_net
+
+  airflow-init:
+    build: .
+    env_file: ".env"
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW_DB_CONN}
+    depends_on:
+      - db
+    command: >
+      bash -c "airflow db init &&
+                airflow users create --username admin --password admin
+                --firstname Admin --lastname User
+                --role Admin --email admin@example.com"
+    networks:
+      - trading_net
+
 networks:
   trading_net:
 
