@@ -12,10 +12,16 @@ def load_data(symbol: str, start: str, end: str = str(date.today())) -> pd.DataF
     data = yf.download(
         symbol, start=start, end=end, interval="1d", auto_adjust=True
     )
-    data.columns = [col.lower() for col in data.columns]
+
+    if isinstance(data.columns, pd.MultiIndex):
+        data.columns = [col[0].lower() for col in data.columns]
+    else:
+        data.columns = [col.lower() for col in data.columns]
+
     data["symbol"] = symbol
     data = data.reset_index()
-    data = data.rename(columns={"date": "date"})
+    data.columns = [col.lower() for col in data.columns]
+
     return data
 
 
