@@ -11,18 +11,21 @@ from src.transform import transform
 
 def get_engine():
     return create_engine(
-        f"posgresql+psycopg2://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@db/{os.getenv('POSTGRES_DB')}"
+        f"postgresql+psycopg2://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@db/{os.getenv('POSTGRES_DB')}"
     )
+
 
 def task_extract_load():
     engine = get_engine()
     df = extract(symbols=["AAPL", "MSFT"], start="2024-01-01")
     load_raw_prices(df, engine)
 
+
 def task_transform_load():
     engine = get_engine()
     df_enriched = transform(engine)
     load_mart(df_enriched, engine)
+
 
 with DAG(
     dag_id="market_data_pipeline",
