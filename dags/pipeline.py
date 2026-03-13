@@ -7,6 +7,7 @@ import os
 from src.extract import extract
 from src.load import load_raw_prices, load_mart
 from src.transform import transform
+from src.quality import run_quality_checks
 
 
 def get_engine():
@@ -26,6 +27,10 @@ def task_transform_load():
     df_enriched = transform(engine)
     load_mart(df_enriched, engine)
 
+def task_quality_check():
+    engine = get_engine()
+    run_quality_checks(engine)
+
 
 with DAG(
     dag_id="market_data_pipeline",
@@ -43,4 +48,9 @@ with DAG(
         python_callable=task_transform_load,
     )
 
-    extract_load >> transform_load
+    quality_check = PythonOperator(
+        task_id="quality_check",
+        python_callable=task_quality_check,
+    )
+
+    extract_load >> transform_load >> quality_check

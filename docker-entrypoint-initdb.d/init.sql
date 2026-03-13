@@ -1,3 +1,4 @@
+CREATE DATABASE airflow;
 CREATE SCHEMA raw;
 
 CREATE TABLE raw.prices (
