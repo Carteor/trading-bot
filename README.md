@@ -4,12 +4,13 @@ An ELT pipeline that ingests daily market data, computes technical indicators, a
 
 ## Architecture
 
-yfinance API -> raw.prices -> staging (indicators) -> mart.daily_market_summary -> quality checks
+yfinance API -> raw.prices -> dbt (stg_prices view) -> mart.daily_market_summary -> quality checks
 
 ## Stack
  - Apache Airflow - orchestration
  - PostgreSQL - data warehouse
- - Python - extract, transform, load scripts
+ - dbt - transformation layer
+ - Python - extract and load scripts
  - Docker - containerized deployment
 
 ## Layers
