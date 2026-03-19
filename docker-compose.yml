@@ -34,6 +34,7 @@ services:
       - ./dags:/opt/airflow/dags
       - ./src:/opt/airflow/src
       - ./logs:/opt/airflow/logs
+      - ./market_data:/opt/airflow/market_data
     ports:
       - "8080:8080"
     depends_on:
@@ -55,6 +56,7 @@ services:
       - ./dags:/opt/airflow/dags
       - ./src:/opt/airflow/src
       - ./logs:/opt/airflow/logs
+      - ./market_data:/opt/airflow/market_data
     depends_on:
       - db
     command: scheduler
