@@ -21,8 +21,10 @@ def get_engine():
 def task_extract_load():
     engine = get_engine()
     symbols_str = Variable.get("symbols", default_var="AAPL,MSFT")
+    start_date = Variable.get("start_date", default_var="2024-01-01")
+
     symbols = [s.strip() for s in symbols_str.split(",")]
-    df = extract(symbols=symbols, start="2024-01-01")
+    df = extract(symbols=symbols, start=start_date)
     load_raw_prices(df, engine)
 
 

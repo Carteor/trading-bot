@@ -21,6 +21,7 @@ def load_data(symbol: str, start: str, end: str = str(date.today())) -> pd.DataF
     data["symbol"] = symbol
     data = data.reset_index()
     data.columns = [col.lower() for col in data.columns]
+    data = data.dropna(subset=["close"])
 
     return data
 
