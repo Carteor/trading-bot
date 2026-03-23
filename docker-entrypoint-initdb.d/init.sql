@@ -44,3 +44,11 @@ create table mart.daily_market_summary (
     volatility_21 NUMERIC(8,6),
     trend VARCHAR(10)
 );
+
+CREATE TABLE raw.economic_indicators (
+    id SERIAL PRIMARY KEY,
+    series_id TEXT,
+    indicator_name TEXT,
+    date TIMESTAMPTZ,
+    value NUMERIC(18,6)
+);

@@ -24,3 +24,19 @@ models:
         description: "Day over day percentage change in closing price"
       - name: volatility_21
         description: "21-day rolling standard deviation of daily returns"
+
+  - name: stg_economic_indicators
+    description: "Economic indicators from FRED API"
+    columns:
+      - name: series_id
+        description: "FRED series identifier"
+        tests:
+          - not_null
+      - name: date
+        description: "Observation date"
+        tests:
+          - not_null
+      - name: value
+        description: "Indicator value"
+        tests:
+          - not_null

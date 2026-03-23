@@ -42,6 +42,7 @@ services:
       - "8080:8080"
     depends_on:
       - db
+      - airflow-init
     command: webserver
     networks:
       - trading_net
@@ -63,6 +64,7 @@ services:
       - ./market_data:/opt/airflow/market_data
     depends_on:
       - db
+      - airflow-init
     command: scheduler
     networks:
       - trading_net
@@ -80,7 +82,9 @@ services:
       bash -c "airflow db init &&
                 airflow users create --username admin --password admin
                 --firstname Admin --lastname User
-                --role Admin --email admin@example.com"
+                --role Admin --email admin@example.com || true && 
+                airflow variables set symbols 'AAPL,MSFT,GOOGL,BTC-USD,ETH-USD' || true &&
+                airflow variables set start_date '2024-01-01' || true"
     networks:
       - trading_net
 
