@@ -1,9 +1,9 @@
 models:
   - name: stg_prices
-    description: "Raw prices enriched with technical indicators"
+    description: "Raw OHHLCV prices enriched with technical indicators computed per symbol"
     columns:
       - name: symbol
-        description: "Stock ticker symbol"
+        description: "Stock ticker symbol e.g. AAPL, MSFT"
         tests:
           - not_null
       - name:  date
@@ -14,3 +14,13 @@ models:
         description: "Closing price"
         tests:
           - not_null
+      - name: ma_7
+        description: "7-day moving average of closing price"
+      - name: ma_21
+        description: "21-day moving average of closing price"
+      - name: rsi_14
+        description: "14-day Relative Strength Index"
+      - name: daily_return
+        description: "Day over day percentage change in closing price"
+      - name: volatility_21
+        description: "21-day rolling standard deviation of daily returns"

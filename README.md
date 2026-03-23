@@ -39,3 +39,9 @@ graph LR
 
 ## DAG
 extract_load_raw -> transform_load_mart -> quality_check
+
+## Data Catalog
+
+dbt auto-generates documentation for all models and their lineage
+
+![dbt lineage](docs/dbt_lineage.png)
