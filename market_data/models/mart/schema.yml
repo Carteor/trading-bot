@@ -1,0 +1,13 @@
+models:
+  - name: daily_market_summary
+    description: "Analysis-ready mart table with technical indicators"
+    columns:
+      - name: symbol
+        tests:
+          - not_null
+      - name: date
+        tests:
+          - not_null
+      - name: close
+        tests:
+          - not_null

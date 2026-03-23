@@ -45,9 +45,14 @@ with DAG(
 
     dbt_run = BashOperator(
         task_id="dbt_run",
-        bash_command="cd /opt/airflow/market_data && dbt run --profiles-dir /opt/airflow/market_data --log-path /tmp/dbt_logs --no-partial-parse",
+        bash_command=(
+            "cd /opt/airflow/market_data && "
+            "dbt run --profiles-dir /opt/airflow/market_data --log-path /tmp/dbt_logs --no-partial-parse && "
+            "dbt test --profiles-dir /opt/airflow/market_data --log-path /tmp/dbt_logs --no-partial-parse"
+        ),
         env={
             "PATH": "/home/airflow/.local/bin:/usr/local/bin:/usr/bin:/bin",
+            "POSTGRES_HOST": "db",
             "POSTGRES_USER": os.getenv("POSTGRES_USER"),
             "POSTGRES_PASSWORD": os.getenv("POSTGRES_PASSWORD"),
             "POSTGRES_DB": os.getenv("POSTGRES_DB"),
