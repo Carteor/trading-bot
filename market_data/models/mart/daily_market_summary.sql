@@ -1,3 +1,10 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key=['symbol', 'date']
+    )
+}}
+
 SELECT
     symbol,
     date,
@@ -7,3 +14,6 @@ SELECT
     daily_return,
     volatility_21
 FROM {{ ref('stg_prices') }}
+{% if is_incremental() %}
+WHERE date > (SELECT MAX(date) FROM {{ this }})
+{% endif %}
