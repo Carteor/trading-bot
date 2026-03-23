@@ -4,7 +4,19 @@ An ELT pipeline that ingests daily market data, computes technical indicators, a
 
 ## Architecture
 
-yfinance API -> raw.prices -> dbt (stg_prices view) -> mart.daily_market_summary -> quality checks
+```mermaid
+graph LR
+    A[yfinance API] --> B[extract.py]
+    B --> C[(raw.prices)]
+    C --> D[dbt stg_prices view]
+    D --> E[(mart.daily_market_summary)]
+    E --> F[dbt tests]
+    F --> G[[quality_check.py]]
+
+    H[Airflow DAG] --> B
+    H --> D
+    H --> G
+```
 
 ## Stack
  - Apache Airflow - orchestration
