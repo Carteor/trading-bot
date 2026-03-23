@@ -1,5 +1,8 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+from airflow.operators.bash import BashOperator
+from airflow.models import Variable
+
 from datetime import datetime
 from sqlalchemy import create_engine
 import os
@@ -8,7 +11,6 @@ from src.extract import extract
 from src.quality import run_quality_checks
 from src.load import load_raw_prices
 
-from airflow.operators.bash import BashOperator
 
 def get_engine():
     return create_engine(
@@ -18,7 +20,9 @@ def get_engine():
 
 def task_extract_load():
     engine = get_engine()
-    df = extract(symbols=["AAPL", "MSFT"], start="2024-01-01")
+    symbols_str = Variable.get("symbols", default_var="AAPL,MSFT")
+    symbols = [s.strip() for s in symbols_str.split(",")]
+    df = extract(symbols=symbols, start="2024-01-01")
     load_raw_prices(df, engine)
 
 
